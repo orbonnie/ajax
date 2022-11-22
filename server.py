@@ -39,7 +39,7 @@ def fortune():
     """Return a single fortune as a text string (*not* the whole HTML page!)"""
 
     return random.choice(FORTUNES)
-
+#use JS in ajax-exercise.js to get that list of randomized strings and return (not a html page)...we have to change a small part in index.html
 
 @app.route('/weather.json')
 def weather():
