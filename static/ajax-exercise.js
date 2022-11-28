@@ -27,11 +27,10 @@ function showWeather(evt) {
   const zipcode = document.querySelector('#zipcode-field').value;
 
   // TODO: request weather with that URL and show the forecast in #weather-info
-  fetch(url + "?zipcode=zipcode") //"fetch(url)" is og way, question mark signifies start of QS <--end of address in browser
-    .then((res) => res.text())
+  fetch(url + `?zipcode=${zipcode}`) //"fetch(url)" is og way, question mark signifies start of QS <--end of address in browser
+    .then((res) => res.json())
     .then((weather) => {
-      document.querySelector("#weather-info").innerHTML = weather;
-      // `Your weather is ${weather.forecast}. The temperature is ${weather.temp}'
+      document.querySelector("#weather-info").innerHTML = `Your weather is ${weather.forecast} The temperature is ${weather.temp}.`
     })
 }
 //^^^`` would set it as a template literal....we can do anything inside the function or do anythin JS method to object
@@ -42,8 +41,21 @@ document.querySelector('#weather-form').addEventListener('submit', showWeather);
 
 function orderMelons(evt) {
   evt.preventDefault();
+  const qty = document.querySelector('#qty-field').value
+  const type = document.querySelector('#melon-type-field').value
+  const data = {melon_type: type, qty: qty}
 
-  // TODO: show the result message after your form
-  // TODO: if the result code is ERROR, make it show up in red (see our CSS!)
+  fetch('/order-melons.json', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      document.querySelector('#order-status').innerHTML = data.msg;
+    })
+
 }
 document.querySelector('#order-form').addEventListener('submit', orderMelons);
